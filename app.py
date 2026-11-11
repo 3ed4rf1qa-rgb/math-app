@@ -1,567 +1,337 @@
-import io
+from __future__ import annotations
+
 import json
 import os
-import re
 import time
-from typing import List
-from docx import Document
-from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml import parse_xml
-from docx.oxml.ns import nsdecls
-from docx.shared import Inches, Pt, RGBColor
-from google import genai
-from google.genai import types
-import pandas as pd
-from pydantic import BaseModel, Field
+from pathlib import Path
+
 import streamlit as st
+from engine import create_store, generate_package
+
+APP_DIR = Path(__file__).resolve().parent
+DATA_DIR = APP_DIR / "data"
 
 st.set_page_config(
-    page_title="AI 기반 수학 수업자료 제작 플랫폼",
+    page_title="수학 탐구·평가 스튜디오",
     page_icon="📐",
     layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+st.markdown(
+    """
+    <style>
+    :root { --navy:#17243a; --blue:#315efb; --line:#e5eaf3; }
+    .stApp { background:#f7f9fd; }
+    [data-testid="stHeader"] { background:rgba(247,249,253,.92); }
+    .block-container { padding-top:1.3rem; padding-bottom:3rem; max-width:1440px; }
+    [data-testid="stSidebar"] { background:#fff; border-right:1px solid var(--line); }
+    .hero { border-radius:22px; padding:28px 32px; color:white;
+      background:linear-gradient(120deg,#17243a 0%,#253d68 55%,#315efb 100%);
+      box-shadow:0 12px 32px rgba(26,46,83,.14); margin-bottom:18px; }
+    .hero-kicker { font-size:11px; letter-spacing:.16em; font-weight:800; opacity:.75; }
+    .hero h1 { color:white; font-size:clamp(25px,3vw,36px); font-weight:800; margin:8px 0 5px; }
+    .hero p { color:#e1e9ff; font-size:14px; margin:0; }
+    .metric { background:white; border:1px solid var(--line); border-radius:16px;
+      padding:15px 17px; min-height:94px; box-shadow:0 3px 12px rgba(32,52,88,.035); }
+    .metric-label { color:#72809a; font-size:12px; margin-bottom:5px; }
+    .metric-value { color:var(--navy); font-size:24px; line-height:1.2; font-weight:800; }
+    .metric-note { color:#8793a8; font-size:11px; margin-top:4px; }
+    .section-title { color:var(--navy); font-weight:800; font-size:18px; margin:8px 0 4px; }
+    div[data-testid="stVerticalBlockBorderWrapper"] { border-radius:16px; border-color:var(--line); }
+    .stButton button[kind="primary"] { border-radius:12px; min-height:48px;
+      font-weight:800; background:var(--blue); border-color:var(--blue); }
+    .stDownloadButton button { border-radius:10px; font-weight:650; }
+    [data-testid="stTabs"] button { font-weight:700; }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 
-# ---------------------------------------------------------
-# 0. Pydantic 스키마 정의 (완성형 활동지 및 교사용 자료 구조)
-# ---------------------------------------------------------
-class ActivityArea(BaseModel):
-  영역제목: str = Field(
-      description=(
-          "예: 1. 개념 발견 및 상황 이해, 2. 수학적 표현과 관계 탐색 등"
-      )
-  )
-  탐구질문_및_활동지시문: str = Field(
-      description="학생이 수행할 구체적인 탐구 내용 및 질문 (LaTeX 수식 포함)"
-  )
-  작성공간_설명: str = Field(
-      description="학생이 풀이/기록할 공간에 대한 안내"
-  )
-
-
-class StudentActivitySheet(BaseModel):
-  활동지제목: str = Field(description="수업 주제에 맞는 매력적인 활동지 제목")
-  학습목표: str = Field(description="이 활동을 통해 달성할 학습 목표")
-  영역목록: List[ActivityArea] = Field(
-      description="2×2 구조에 맞춘 4개의 핵심 탐구 영역"
-  )
-  마무리적용문제: str = Field(
-      description="활동지 하단에 배치할 최종 적용 및 정리 문제"
-  )
-
-
-class ScoringStep(BaseModel):
-  단계: str = Field(description="채점 기준 단계 요약")
-  배점: str = Field(description="인정 배점")
-
-
-class SubQuestionSolution(BaseModel):
-  문항번호: str = Field(description="예: 영역 1, 영역 2 또는 문항 1, 2")
-  모범답안: str = Field(description="상세한 모범 풀이 과정")
-  채점기준: List[ScoringStep] = Field(description="단계별 부분 점수 기준")
-
-
-class TeacherSolutionModel(BaseModel):
-  정답_및_해설목록: List[SubQuestionSolution] = Field(
-      description="모든 문항/영역별 상세 정답 및 해설"
-  )
-
-
-class TeacherLessonPlan(BaseModel):
-  수업목표: str = Field(description="50분 기준 수업 목표")
-  준비물: str = Field(description="필요한 교구 및 학습지")
-  도입_동기유발: str = Field(description="수업 시작 5분 도입 가이드")
-  활동별시간배분: str = Field(description="영역별 상세 시간 배분")
-  핵심발문_및_교사지도요령: str = Field(
-      description="교사가 던져야 할 핵심 발문과 오개념 지도 방안"
-  )
-  정리_및_형성평가: str = Field(description="수업 마무리 정리 방법")
-
-
-class DifferentiatedSheets(BaseModel):
-  기초형_조정사항: str = Field(
-      description="핵심 개념 이해 중심, 힌트와 기본 수치가 제공되는 형태"
-  )
-  기본형_조정사항: str = Field(
-      description="표준 성취기준에 적합한 본래의 탐구 활동형"
-  )
-  심화형_조정사항: str = Field(
-      description="조건 변형 및 복합적 사고·일반화 확장형"
-  )
-
-
-class CompleteAssessmentPackage(BaseModel):
-  학생용활동지: StudentActivitySheet
-  교사용해설: TeacherSolutionModel
-  교사용지도안: TeacherLessonPlan
-  수준별활동지안내: DifferentiatedSheets
-
-
-# ---------------------------------------------------------
-# 1. API 호출 및 안전한 파싱 함수
-# ---------------------------------------------------------
-def clean_and_parse_json(raw_text: str):
-  cleaned = raw_text.strip()
-  if cleaned.startswith("```json"):
-    cleaned = cleaned[7:]
-  elif cleaned.startswith("```"):
-    cleaned = cleaned[3:]
-  if cleaned.endswith("```"):
-    cleaned = cleaned[:-3]
-  cleaned = cleaned.strip()
-
-  try:
-    return json.loads(cleaned)
-  except json.JSONDecodeError:
-    fixed = re.sub(r'\\([a-zA-Z])', r'\\\\\1', cleaned)
-    return json.loads(fixed)
-
-
-def generate_complete_package_with_ai(
-    api_key: str,
-    subject: str,
-    unit: str,
-    code: str,
-    content: str,
-    task_type: str,
-    source_archetype: str,
-):
-  client = genai.Client(api_key=api_key)
-
-  prompt = f"""당신은 대한민국 고등학교 수학과 2022 개정 교육과정 수석 교육과정 전문가이자 교과서 집필위원입니다.
-아래 성취기준과 조건에 맞춰, 교사가 인쇄하여 학생에게 바로 배부할 수 있는 **완성형 학생용 수학 활동지**와 **교사용 수업 자료(해설, 지도안, 수준별 안내)**를 구조화된 JSON으로 생성하세요.
-
-[출제 정보]
-- 과목: {subject}
-- 단원: {unit}
-- 성취기준: [{code}] {content}
-- 평가/활동 유형: {task_type}
-- 벤치마킹 출처 스타일: {source_archetype}
-
-[작성 지침]
-1. 학생용 활동지는 교사의 추가 설명 없이도 학생 스스로 읽고 탐구할 수 있도록 완결성 있게 작성할 것.
-2. 학생용 활동지의 본문 영역은 2×2 구조(총 4개 영역: 개념발견, 수학적표현, 핵심탐구, 적용정리)로 구성할 것.
-3. 교사용 해설과 수업 지도안은 학생용 활동지와 완벽하게 연계될 것.
-4. 모든 수학 기호와 수식은 표준 LaTeX 형식($...$)으로 작성할 것."""
-
-  max_retries = 3
-  backoff_factor = 2
-
-  for attempt in range(max_retries):
+def _secret_or_env(name: str, default: str = "") -> str:
     try:
-      response = client.models.generate_content(
-          model="gemini-2.5-flash",
-          contents=prompt,
-          config=types.GenerateContentConfig(
-              response_mime_type="application/json",
-              response_schema=CompleteAssessmentPackage,
-              temperature=0.3,
-          ),
-      )
-      return clean_and_parse_json(response.text)
-    except Exception as e:
-      if "503" in str(e) or "UNAVAILABLE" in str(e):
-        if attempt < max_retries - 1:
-          time.sleep(backoff_factor**attempt)
-          continue
-      raise e
+        value = st.secrets.get(name, None)
+    except Exception:
+        value = None
+    return str(value or os.getenv(name, default) or default)
 
 
-# ---------------------------------------------------------
-# 2. Word(.docx) 시험지 및 활동지 결재 양식 생성 함수
-# ---------------------------------------------------------
-def create_complete_package_docx(
-    subject, unit, code, content, package_data
-):
-  doc = Document()
-
-  sections = doc.sections
-  for section in sections:
-    section.top_margin = Inches(0.8)
-    section.bottom_margin = Inches(0.8)
-    section.left_margin = Inches(0.8)
-    section.right_margin = Inches(0.8)
-
-  style = doc.styles["Normal"]
-  font = style.font
-  font.name = "맑은 고딕"
-  font.size = Pt(10)
-  font.color.rgb = RGBColor(0x33, 0x33, 0x33)
-
-  # [1] 상단 결재란 (교사 업무용)
-  approval_table = doc.add_table(rows=2, cols=4)
-  approval_table.alignment = WD_TABLE_ALIGNMENT.RIGHT
-  approval_col_widths = [Inches(0.8), Inches(0.8), Inches(0.8), Inches(0.8)]
-
-  for i, text in enumerate(["담당", "계장", "교감", "교장"]):
-    cell = approval_table.cell(0, i)
-    cell.width = approval_col_widths[i]
-    p = cell.paragraphs[0]
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run(text)
-    run.bold = True
-    shading = parse_xml(r'<w:shd {} w:fill="E0E0E0"/>'.format(nsdecls("w")))
-    cell._tc.get_or_add_tcPr().append(shading)
-
-  for i in range(4):
-    approval_table.cell(1, i).width = approval_col_widths[i]
-
-  def set_table_borders(table, color="CCCCCC"):
-    tblPr = table._tbl.tblPr
-    borders = parse_xml(
-        f'<w:tblBorders {nsdecls("w")}>'
-        f'<w:top w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f'<w:left w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f'<w:bottom w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f'<w:right w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f'<w:insideH w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f'<w:insideV w:val="single" w:sz="4" w:space="0" w:color="{color}"/>'
-        f"</w:tblBorders>"
-    )
-    tblPr.append(borders)
-
-  set_table_borders(approval_table)
-  doc.add_paragraph()
-
-  # [2] 학생용 활동지 본문 생성
-  sheet = package_data.get("학생용활동지", {})
-  doc.add_heading(
-      f"[수학 탐구 활동지] {sheet.get('활동지제목', '수학 탐구 학습')}", level=1
-  )
-
-  info_table = doc.add_table(rows=2, cols=4)
-  info_data = [
-      ("과목", subject, "단원", unit),
-      ("소속/학번/이름", "고등학교 [   ]학년 [   ]반 [   ]번", "성명", "___________"),
-  ]
-  for r_idx, row_info in enumerate(info_data):
-    for c_idx, text in enumerate(row_info):
-      cell = info_table.cell(r_idx, c_idx)
-      p = cell.paragraphs[0]
-      run = p.add_run(text)
-      if c_idx % 2 == 0:
-        run.bold = True
-  set_table_borders(info_table)
-  doc.add_paragraph()
-
-  doc.add_paragraph(f"📌 학습 목표: {sheet.get('학습목표', '')}")
-  doc.add_paragraph(f"📌 관련 성취기준: [{code}] {content}")
-  doc.add_paragraph("---")
-
-  for area in sheet.get("영역목록", []):
-    doc.add_heading(area.get("영역제목", "탐구 영역"), level=2)
-    doc.add_paragraph(area.get("탐구질문_및_활동지시문", ""))
-    p_box = doc.add_paragraph(
-        f"[풀이 및 기록 공간] 👉 {area.get('작성공간_설명', '')}"
-    )
-    p_box.paragraph_format.left_indent = Inches(0.2)
-    doc.add_paragraph()
-
-  doc.add_heading("📌 마무리 적용 문제", level=2)
-  doc.add_paragraph(sheet.get("마무리적용문제", ""))
-
-  doc.add_page_break()
-
-  # [3] 교사용 정답 및 상세 해설
-  doc.add_heading("📁 [교사용 자료] 정답 및 상세 해설", level=1)
-  sol = package_data.get("교사용해설", {})
-  for item in sol.get("정답_및_해설목록", []):
-    doc.add_heading(f"▶ {item.get('문항번호', '')} 해설", level=2)
-    doc.add_paragraph(f"[모범 답안]\n{item.get('모범답안', '')}")
-    doc.add_paragraph("[채점 기준]")
-    for step in item.get("채점기준", []):
-      doc.add_paragraph(
-          f" - {step.get('단계', '')} (배점: {step.get('배점', '')})"
-      )
-    doc.add_paragraph()
-
-  doc.add_page_break()
-
-  # [4] 교사용 수업 지도안
-  doc.add_heading("📁 [교사용 자료] 50분 수업 지도안", level=1)
-  plan = package_data.get("교사용지도안", {})
-  doc.add_paragraph(f"• 수업 목표: {plan.get('수업목표', '')}")
-  doc.add_paragraph(f"• 준비물: {plan.get('준비물', '')}")
-  doc.add_paragraph(f"• 도입 및 동기유발: {plan.get('도입_동기유발', '')}")
-  doc.add_paragraph(f"• 영역별 시간 배분: {plan.get('활동별시간배분', '')}")
-  doc.add_paragraph(
-      f"• 핵심 발문 및 지도 방안: {plan.get('핵심발문_및_교사지도요령', '')}"
-  )
-  doc.add_paragraph(f"• 정리 및 평가: {plan.get('정리_및_형성평가', '')}")
-
-  buffer = io.BytesIO()
-  doc.save(buffer)
-  buffer.seek(0)
-  return buffer
-
-
-# ---------------------------------------------------------
-# 3. 성취기준 데이터 (7개 과목, 130개)
-# ---------------------------------------------------------
-ALL_STANDARDS_DATA = [
-    (
-        "공통수학1",
-        "다항식",
-        "10공수1-01-01",
-        "다항식의 사칙연산의 원리를 설명하고, 그 계산을 할 수 있다.",
-    ),
-    (
-        "공통수학1",
-        "다항식",
-        "10공수1-01-02",
-        "항등식의 성질과 나머지정리를 이해하고, 이를 활용하여 문제를 해결할 수 있다.",
-    ),
-    (
-        "미적분Ⅰ",
-        "미분",
-        "12미적1-02-04",
-        "함수의 증가와 감소, 극대와 극소를 판정하고 함수의 그래프의 개형을 그릴 수"
-        " 있다.",
-    ),
-    (
-        "미적분Ⅰ",
-        "미분",
-        "12미적1-02-05",
-        "도함수를 방정식, 부등식, 속도와 가속도에 활용할 수 있다.",
-    ),
-    (
-        "확률과 통계",
-        "통계",
-        "12확통03-04",
-        "표본평균의 분포를 이해하고, 모평균의 신뢰구간을 구할 수 있다.",
-    ),
-]
-df_standards = pd.DataFrame(
-    ALL_STANDARDS_DATA, columns=["과목", "단원", "성취기준코드", "성취기준내용"]
-)
-
-
-# ---------------------------------------------------------
-# 4. 사이드바 설정
-# ---------------------------------------------------------
-with st.sidebar:
-  st.header("⚙️ 플랫폼 환경 설정")
-  default_key = os.environ.get("GEMINI_API_KEY", "")
-  try:
-    if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
-      default_key = st.secrets["GEMINI_API_KEY"]
-  except Exception:
-    pass
-
-  api_key_input = st.text_input(
-      "Gemini API Key",
-      value=default_key,
-      type="password",
-      help="Google AI Studio에서 발급받은 API 키를 입력하세요.",
-  )
-
-  if api_key_input:
-    st.success("API 키 로드 완료", icon="🔑")
-  else:
-    st.error("활동지 생성을 위해 Gemini API 키가 필수입니다.")
-
-
-# ---------------------------------------------------------
-# 5. 메인 레이아웃
-# ---------------------------------------------------------
-st.title("📐 AI 기반 수학 수업자료 제작 플랫폼")
-st.caption(
-    "교사가 과목과 성취기준을 선택하면 학생용 활동지, 교사용 지도안, 상세"
-    " 해설을 자동으로 완성합니다."
-)
-st.markdown("---")
-
-col1, col2 = st.columns(2)
-
-with col1:
-  st.subheader("1. 성취기준 선택")
-  subject_list = df_standards["과목"].unique().tolist()
-  selected_subject = st.selectbox("과목 선택", subject_list)
-
-  filtered_by_subj = df_standards[df_standards["과목"] == selected_subject]
-  unit_list = filtered_by_subj["단원"].unique().tolist()
-  selected_unit = st.selectbox("단원 선택", unit_list)
-
-  filtered_by_unit = filtered_by_subj[filtered_by_subj["단원"] == selected_unit]
-  code_list = filtered_by_unit["성취기준코드"].tolist()
-  code_to_content = dict(
-      zip(filtered_by_unit["성취기준코드"], filtered_by_unit["성취기준내용"])
-  )
-
-  selected_code = st.selectbox(
-      "성취기준 선택",
-      code_list,
-      format_func=lambda c: f"[{c}] {code_to_content[c]}",
-  )
-  selected_content = code_to_content[selected_code]
-
-with col2:
-  st.subheader("2. 수업 및 출처 스타일 설정")
-  task_type = st.selectbox(
-      "탐구 및 평가 활동 유형",
-      [
-          "개념 탐구 및 실생활 문제해결 활동지",
-          "수학적 모델링 및 추론 탐구",
-          "서·논술형 지필평가 연계 활동",
-          "모둠별 과제 탐구 활동",
-      ],
-  )
-  source_archetype = st.selectbox(
-      "자료 벤치마킹 스타일",
-      [
-          "시도교육청 우수 서·논술형 활동지 스타일",
-          "수학교과서 심화 탐구 활동 스타일",
-          "교육과정 평가원 우수 수업 자료 스타일",
-      ],
-  )
-  st.info(
-      f"**선택된 성취기준:** [{selected_code}]\n\n**스타일:**"
-      f" {source_archetype}"
-  )
-
-st.markdown("---")
-
-if st.button(
-    "🚀 완성형 수학 활동지 및 교사용 자료 자동 생성",
-    type="primary",
-    use_container_width=True,
-):
-  if not api_key_input:
-    st.error("사이드바에 Gemini API 키를 입력해 주세요.")
-  else:
-    with st.spinner(
-        f"[{selected_code}] 성취기준 기반 학생용 활동지와 교사용 자료 패키지를"
-        " 생성 중입니다..."
-    ):
-      try:
-        package_result = generate_complete_package_with_ai(
-            api_key_input,
-            selected_subject,
-            selected_unit,
-            selected_code,
-            selected_content,
-            task_type,
-            source_archetype,
+@st.cache_resource
+def load_store():
+    required = [
+        "achievement_standards.json", "all_concepts.json",
+        "all_misconceptions.json", "all_inquiry_activities.json",
+        "all_item_blueprints.json", "all_standard_concept_map.json",
+        "all_scope_guardrails.json", "area_guidance.json",
+        "design_principles.json", "concept_relations.json",
+        "assessment_package.schema.json", "gemini_generation.schema.json",
+    ]
+    missing = [name for name in required if not (DATA_DIR / name).is_file()]
+    if missing:
+        raise FileNotFoundError(
+            "필수 지식 데이터 파일이 없습니다: " + ", ".join(missing)
+            + f" | 확인 경로: {DATA_DIR}"
         )
-        st.session_state["complete_package"] = package_result
-        st.session_state["sel_subj"] = selected_subject
-        st.session_state["sel_unit"] = selected_unit
-        st.session_state["sel_code"] = selected_code
-        st.session_state["sel_content"] = selected_content
-        st.success("수업 자료 패키지 생성 완료!")
-      except Exception as e:
-        st.error(f"생성 중 오류가 발생했습니다: {str(e)}")
-        st.session_state["complete_package"] = None
+    return create_store(DATA_DIR)
 
 
-# ---------------------------------------------------------
-# 6. 결과 출력 영역 (4대 핵심 탭)
-# ---------------------------------------------------------
-if "complete_package" in st.session_state and st.session_state[
-    "complete_package"
+st.markdown(
+    """
+    <div class="hero">
+      <div class="hero-kicker">AI MATH DESIGN WORKSPACE · 2022 REVISED CURRICULUM</div>
+      <h1>수학 탐구·평가 스튜디오</h1>
+      <p>성취기준에서 출발해 탐구 수업, 완결형 문항, A~E 평가기준까지 한 번에 설계합니다.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+try:
+    store = load_store()
+except Exception as exc:
+    st.error("지식 데이터 로딩에 실패했습니다.")
+    st.code(str(exc))
+    st.info("GitHub 저장소 최상위에 app.py와 같은 위치로 data/ 폴더를 업로드했는지 확인하세요.")
+    st.stop()
+
+courses = store.list_courses()
+total_standards = sum(len(store.list_standards(c["course_id"])) for c in courses)
+m1, m2, m3, m4 = st.columns(4)
+for col, label, value, note in [
+    (m1, "운영 과목", f"{len(courses)}개", "2022 개정 교육과정"),
+    (m2, "공식 성취기준", f"{total_standards}개", "과목별 연결 데이터"),
+    (m3, "학습 개념", f"{len(store.concepts)}개", "개념·성취기준 매핑"),
+    (m4, "탐구 활동", f"{len(store.activities)}개", "문항 설계와 연계"),
 ]:
-  pkg = st.session_state["complete_package"]
-  subj = st.session_state.get("sel_subj", "")
-  unit = st.session_state.get("sel_unit", "")
-  code = st.session_state.get("sel_code", "")
-  content = st.session_state.get("sel_content", "")
-
-  docx_buffer = create_complete_package_docx(subj, unit, code, content, pkg)
-  st.download_button(
-      label="📥 전체 수업 자료 패키지 Word(.docx) 다운로드 (활동지+해설+지도안)",
-      data=docx_buffer,
-      file_name=f"수학수업자료_{code}.docx",
-      mime=(
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      ),
-      use_container_width=True,
-      type="primary",
-  )
-  st.markdown("---")
-
-  tab1, tab2, tab3, tab4 = st.tabs([
-      "📄 1. 학생용 활동지 미리보기",
-      "👩‍🏫 2. 교사용 수업 지도안",
-      "🎯 3. 정답 및 상세 해설",
-      "📊 4. 수준별 활동지 안내",
-  ])
-
-  # [탭 1] 학생용 활동지
-  with tab1:
-    sheet = pkg.get("학생용활동지", {})
-    st.markdown(f"## 📄 {sheet.get('활동지제목', '수학 탐구 활동지')}")
-    st.info(f"**학습 목표:** {sheet.get('학습목표', '')}")
-
-    st.markdown("---")
-    st.markdown("### 🧩 탐구 본문 (2×2 영역 구성)")
-
-    areas = sheet.get("영역목록", [])
-    for i in range(0, len(areas), 2):
-      col_a, col_b = st.columns(2)
-      with col_a:
-        if i < len(areas):
-          a1 = areas[i]
-          st.container(border=True)
-          st.markdown(f"#### {a1.get('영역제목', '')}")
-          st.markdown(a1.get("탐구질문_및_활동지시문", ""))
-          st.caption(
-              f"✍️ [기록 공간] {a1.get('작성공간_설명', '풀이를 작성하세요.')}"
-          )
-      with col_b:
-        if i + 1 < len(areas):
-          a2 = areas[i + 1]
-          st.container(border=True)
-          st.markdown(f"#### {a2.get('영역제목', '')}")
-          st.markdown(a2.get("탐구질문_및_활동지시문", ""))
-          st.caption(
-              f"✍️ [기록 공간] {a2.get('작성공간_설명', '풀이를 작성하세요.')}"
-          )
-
-    st.markdown("---")
-    st.markdown("### 📌 마무리 적용 문제")
-    st.write(sheet.get("마무리적용문제", ""))
-
-  # [탭 2] 교사용 수업 지도안
-  with tab2:
-    st.subheader("👩‍🏫 50분 수업 지도안")
-    plan = pkg.get("교사용지도안", {})
-    st.write(f"**• 수업 목표:** {plan.get('수업목표', '')}")
-    st.write(f"**• 준비물:** {plan.get('준비물', '')}")
-    st.write(f"**• 도입 및 동기유발:** {plan.get('도입_동기유발', '')}")
-    st.write(f"**• 영역별 시간 배분:** {plan.get('활동별시간배분', '')}")
-    st.write(
-        f"**• 핵심 발문 및 지도 방안:**"
-        f" {plan.get('핵심발문_및_교사지도요령', '')}"
+    col.markdown(
+        f'<div class="metric"><div class="metric-label">{label}</div>'
+        f'<div class="metric-value">{value}</div><div class="metric-note">{note}</div></div>',
+        unsafe_allow_html=True,
     )
-    st.write(f"**• 정리 및 평가:** {plan.get('정리_및_형성평가', '')}")
 
-  # [탭 3] 정답 및 상세 해설
-  with tab3:
-    st.subheader("🎯 정답 및 상세 해설")
-    sol = pkg.get("교사용해설", {})
-    for item in sol.get("정답_및_해설목록", []):
-      st.markdown(f"#### **{item.get('문항번호', '')} 해설**")
-      with st.expander("모범 답안 보기", expanded=True):
-        st.markdown(item.get("모범답안", ""))
-      st.markdown("**[채점 기준]**")
-      for step in item.get("채점기준", []):
-        st.markdown(
-            f"- {step.get('단계', '')} *(배점: {step.get('배점', '')})*"
+with st.sidebar:
+    st.markdown("### ⚙️ 설계 조건")
+    st.caption("1. 과목과 성취기준을 선택하세요.")
+    course_labels = {
+        f"{x['course_name']} · {x['course_category']}": x["course_id"] for x in courses
+    }
+    course_label = st.selectbox("과목", list(course_labels), key="course_label")
+    course_id = course_labels[course_label]
+    standards = store.list_standards(course_id)
+    units = store.list_units(course_id)
+    unit_labels = {u["unit_name"]: u["unit_id"] for u in units}
+    unit_name = st.selectbox("단원", list(unit_labels), key="unit_name")
+    target_standards = [x for x in standards if x["unit_id"] == unit_labels[unit_name]]
+    code_to_record = {x["code"]: x for x in target_standards}
+    selected_code = st.selectbox(
+        "성취기준", list(code_to_record),
+        format_func=lambda code: f"{code} | {code_to_record[code]['content'][:52]}",
+        key="standard_code",
+    )
+    st.divider()
+    st.caption("2. 생성 방식을 선택하세요.")
+    mode = st.radio("생성 모드", ["Gemini AI 완성형", "오프라인 설계 초안"], index=0)
+    api_key = ""
+    model = _secret_or_env("GEMINI_MODEL", "gemini-3.5-flash-lite")
+    thinking_level = "minimal"
+    if mode.startswith("Gemini"):
+        saved_key = _secret_or_env("GEMINI_API_KEY")
+        if saved_key:
+            st.success("Gemini API 키 연결 확인")
+        api_key = st.text_input(
+            "Gemini API Key", type="password",
+            placeholder="Secrets 등록 시 비워두세요",
+            help="키는 저장소에 기록하지 않습니다.",
         )
-      st.markdown("---")
+        model_options = ["gemini-3.5-flash-lite", "gemini-3.8-flash"]
+        model_default = model if model in model_options else model_options[0]
+        model = st.selectbox(
+            "생성 모델", model_options, index=model_options.index(model_default),
+            format_func=lambda x: "Flash-Lite · 빠른 생성" if x == "gemini-3.5-flash-lite" else "Flash · 균형 품질",
+        )
+        if model == "gemini-3.5-flash-lite":
+            speed = st.radio(
+                "추론 수준", ["최소 · 가장 빠름", "낮음 · 빠름", "중간 · 정밀"],
+                index=0,
+            )
+            thinking_level = {
+                "최소 · 가장 빠름": "minimal",
+                "낮음 · 빠름": "low",
+                "중간 · 정밀": "medium",
+            }[speed]
+        else:
+            speed = st.radio("추론 수준", ["낮음 · 빠름", "중간 · 정밀"], index=0)
+            thinking_level = "low" if speed.startswith("낮음") else "medium"
+        st.caption("빠른 모드는 생성 지연을 줄입니다. 결과물은 교사가 검토한 뒤 사용하세요.")
+    user_requirements = st.text_area(
+        "수업 맞춤 요청 (선택)",
+        placeholder="예: 그래프 해석 중심, 실생활 맥락, 50분 수업, 서술형 문항",
+        height=92,
+    )
+    generate_clicked = st.button(
+        "✦ 탐구 수업·평가 패키지 생성", type="primary", use_container_width=True
+    )
+    st.caption("Gemini 요청은 기본 1회입니다. 응답이 도착하면 실시간으로 표시합니다.")
 
-  # [탭 4] 수준별 활동지 안내
-  with tab4:
-    st.subheader("📊 수준별(기초·기본·심화) 활동지 조정 가이드")
-    diff = pkg.get("수준별활동지안내", {})
-    col_l, col_m, col_r = st.columns(3)
-    with col_l:
-      st.info("🟢 **기초형 (하)**")
-      st.write(diff.get("기초형_조정사항", ""))
-    with col_m:
-      st.success("🔵 **기본형 (중)**")
-      st.write(diff.get("기본형_조정사항", ""))
-    with col_r:
-      st.warning("🟣 **심화형 (상)**")
-      st.write(diff.get("심화형_조정사항", ""))
+selected = code_to_record[selected_code]
+c1, c2 = st.columns([1.7, 1], gap="large")
+with c1:
+    with st.container(border=True):
+        st.markdown('<div class="section-title">선택한 학습 기준</div>', unsafe_allow_html=True)
+        st.markdown(f"**{selected['course_name']} · {selected['unit_name']}**")
+        st.markdown(f"`{selected['code']}`")
+        st.write(selected["content"])
+with c2:
+    with st.container(border=True):
+        st.markdown('<div class="section-title">생성 패키지</div>', unsafe_allow_html=True)
+        st.write("① 탐구 수업 설계")
+        st.write("② 완결형 평가 문항")
+        st.write("③ 모범답안 및 풀이")
+        st.write("④ A~E 수준별 채점기준")
+
+if generate_clicked:
+    started = time.perf_counter()
+    is_gemini = mode.startswith("Gemini")
+    effective_key = api_key or _secret_or_env("GEMINI_API_KEY")
+    if is_gemini and not effective_key:
+        st.error("Gemini API 키가 없습니다. Streamlit Secrets의 GEMINI_API_KEY를 확인하세요.")
+    else:
+        status_area = st.status("생성 준비 중 · 교육과정 데이터를 확인합니다.", expanded=True)
+        stream_area = st.empty()
+        stream_code = st.empty()
+        latest = {"updated": 0.0}
+
+        def on_chunk(text: str):
+            now = time.perf_counter()
+            if now - latest["updated"] >= 0.3:
+                latest["updated"] = now
+                elapsed = now - started
+                status_area.update(
+                    label=f"Gemini 응답 수신 중 · {len(text):,}자 · {elapsed:.1f}초",
+                    state="running", expanded=True,
+                )
+                stream_area.caption("구조화된 JSON 응답을 실시간 수신하고 있습니다.")
+                stream_code.code(text[-900:], language="json")
+
+        try:
+            if is_gemini:
+                status_area.write(f"모델: {model} · 추론 수준: {thinking_level}")
+                status_area.write("완성형 패키지를 한 번의 Gemini 요청으로 생성합니다.")
+                status_area.write("첫 응답이 도착하면 실시간 미리보기가 표시됩니다.")
+                package = generate_package(
+                    store, course_id, selected_code, mode="gemini",
+                    api_key=effective_key, model=model,
+                    user_requirements=user_requirements or None,
+                    thinking_level=thinking_level, on_chunk=on_chunk,
+                )
+            else:
+                package = generate_package(
+                    store, course_id, selected_code, mode="offline",
+                    user_requirements=user_requirements or None,
+                )
+            elapsed = time.perf_counter() - started
+            package.setdefault("metadata", {})["generation_seconds"] = round(elapsed, 2)
+            package["metadata"]["thinking_level"] = thinking_level if is_gemini else "offline"
+            package["metadata"]["model"] = model if is_gemini else None
+            st.session_state["math_package"] = package
+            status_area.update(label=f"생성 완료 · {elapsed:.1f}초", state="complete", expanded=False)
+            stream_area.empty()
+            stream_code.empty()
+            st.success(f"패키지 생성 및 구조 검증 완료 · {elapsed:.1f}초")
+        except Exception as exc:
+            elapsed = time.perf_counter() - started
+            status_area.update(label=f"생성 실패 · {elapsed:.1f}초", state="error", expanded=True)
+            st.error(f"{type(exc).__name__}: {exc}")
+            st.warning(
+                "시간이 길면 Flash-Lite 모델과 최소 추론을 선택하세요. "
+                "인증·할당량·모델 오류는 동일 요청을 자동 반복하지 않습니다."
+            )
+
+package = st.session_state.get("math_package")
+if package:
+    st.divider()
+    selection = package["selection"]
+    st.markdown(
+        f'<div class="section-title">생성 결과 · {selection["course_name"]} / {selection["unit_name"]}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(f"**{selection['standard_code']}** · {selection['standard_content']}")
+    metadata = package.get("metadata", {})
+    if metadata.get("generation_seconds") is not None:
+        st.caption(
+            f"생성 시간 {metadata['generation_seconds']}초 · "
+            f"모델 {metadata.get('model') or '오프라인'} · "
+            f"추론 {metadata.get('thinking_level', '-')}"
+        )
+    t1, t2, t3, t4 = st.tabs(["수업 설계", "문항·정답", "A~E 채점기준", "품질 검증"])
+    with t1:
+        design = package["design"]
+        with st.container(border=True):
+            st.markdown("#### 핵심 탐구 질문")
+            st.markdown(f"### {design['driving_question']}")
+            st.write(design["context"])
+        a, b = st.columns(2)
+        with a:
+            st.markdown("#### 학습 목표")
+            for obj in design.get("learning_objectives", []):
+                st.write("✓ " + obj)
+        with b:
+            st.markdown("#### 수학적 표현")
+            st.write(" · ".join(design.get("representations", [])))
+        st.markdown("#### 탐구 흐름")
+        for i, step in enumerate(design["inquiry_steps"], 1):
+            with st.expander(f"{i:02d} · {step['phase']}", expanded=(i == 1)):
+                st.markdown("**교사 활동**")
+                st.write(step["teacher_action"])
+                st.markdown("**학생이 남길 증거**")
+                st.write(step["student_evidence"])
+        a, b = st.columns(2)
+        with a:
+            st.markdown("#### 개별 지원")
+            for item in design.get("differentiation", {}).get("support", []):
+                st.write("• " + item)
+        with b:
+            st.markdown("#### 심화·확장")
+            for item in design.get("differentiation", {}).get("extension", []):
+                st.write("• " + item)
+    with t2:
+        item = package["item"]
+        with st.container(border=True):
+            st.caption(f"{item['item_type']} · 인지 수준: {item['cognitive_demand']}")
+            st.markdown("#### 평가 문항")
+            st.markdown(item["prompt"])
+        st.markdown("#### 모범답안")
+        st.success(item["expected_answer"])
+        st.markdown("#### 단계별 풀이")
+        for i, step in enumerate(item.get("solution_steps", []), 1):
+            st.write(f"{i}. {step}")
+        with st.expander("형성평가 체크"):
+            for question in package.get("formative_check", {}).get("questions", []):
+                st.write("□ " + question)
+    with t3:
+        rubric = package["item"]["rubric"]
+        st.metric("총점", f"{rubric['total_points']}점")
+        for criterion in rubric["criteria"]:
+            with st.expander(f"{criterion['criterion']} · {criterion['points']}점"):
+                st.table([
+                    {"수준": level, "관찰 가능한 수행": desc}
+                    for level, desc in criterion["levels"].items()
+                ])
+    with t4:
+        validation = package.get("validation", {})
+        st.metric("검증 상태", validation.get("status", "UNKNOWN"))
+        for check in validation.get("checks", []):
+            mark = "✅" if check.get("status") == "PASS" else "⚠️"
+            st.write(f"{mark} **{check.get('name')}** — {check.get('detail')}")
+        for warning in validation.get("warnings", []):
+            st.warning(warning)
+
+    payload = json.dumps(package, ensure_ascii=False, indent=2)
+    st.download_button(
+        "⬇ JSON 패키지 다운로드", payload,
+        file_name="math_inquiry_assessment.json",
+        mime="application/json", use_container_width=True,
+    )
+else:
+    st.info("왼쪽에서 과목과 성취기준을 선택한 뒤 생성 버튼을 눌러 주세요.")
