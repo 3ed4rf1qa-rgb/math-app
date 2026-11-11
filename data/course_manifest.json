@@ -1,0 +1,350 @@
+{
+  "metadata": {
+    "core_course_count": 7,
+    "standard_count": 130,
+    "curriculum": "2022 개정 교육과정",
+    "source_notice": "교육부 고시 제2022-33호 [별책 8]"
+  },
+  "courses": [
+    {
+      "course_id": "HS-COMMON-MATH-1",
+      "course_name": "공통수학1",
+      "category": "공통",
+      "standard_count": 19,
+      "areas": [
+        {
+          "unit_id": "HS-COMMON-MATH-1-U01",
+          "unit_name": "다항식",
+          "standard_count": 3,
+          "standard_codes": [
+            "10공수1-01-01",
+            "10공수1-01-02",
+            "10공수1-01-03"
+          ]
+        },
+        {
+          "unit_id": "HS-COMMON-MATH-1-U02",
+          "unit_name": "방정식과 부등식",
+          "standard_count": 11,
+          "standard_codes": [
+            "10공수1-02-01",
+            "10공수1-02-02",
+            "10공수1-02-03",
+            "10공수1-02-04",
+            "10공수1-02-05",
+            "10공수1-02-06",
+            "10공수1-02-07",
+            "10공수1-02-08",
+            "10공수1-02-09",
+            "10공수1-02-10",
+            "10공수1-02-11"
+          ]
+        },
+        {
+          "unit_id": "HS-COMMON-MATH-1-U03",
+          "unit_name": "경우의 수",
+          "standard_count": 3,
+          "standard_codes": [
+            "10공수1-03-01",
+            "10공수1-03-02",
+            "10공수1-03-03"
+          ]
+        },
+        {
+          "unit_id": "HS-COMMON-MATH-1-U04",
+          "unit_name": "행렬",
+          "standard_count": 2,
+          "standard_codes": [
+            "10공수1-04-01",
+            "10공수1-04-02"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-COMMON-MATH-2",
+      "course_name": "공통수학2",
+      "category": "공통",
+      "standard_count": 20,
+      "areas": [
+        {
+          "unit_id": "HS-COMMON-MATH-2-U01",
+          "unit_name": "도형의 방정식",
+          "standard_count": 7,
+          "standard_codes": [
+            "10공수2-01-01",
+            "10공수2-01-02",
+            "10공수2-01-03",
+            "10공수2-01-04",
+            "10공수2-01-05",
+            "10공수2-01-06",
+            "10공수2-01-07"
+          ]
+        },
+        {
+          "unit_id": "HS-COMMON-MATH-2-U02",
+          "unit_name": "집합과 명제",
+          "standard_count": 8,
+          "standard_codes": [
+            "10공수2-02-01",
+            "10공수2-02-02",
+            "10공수2-02-03",
+            "10공수2-02-04",
+            "10공수2-02-05",
+            "10공수2-02-06",
+            "10공수2-02-07",
+            "10공수2-02-08"
+          ]
+        },
+        {
+          "unit_id": "HS-COMMON-MATH-2-U03",
+          "unit_name": "함수와 그래프",
+          "standard_count": 5,
+          "standard_codes": [
+            "10공수2-03-01",
+            "10공수2-03-02",
+            "10공수2-03-03",
+            "10공수2-03-04",
+            "10공수2-03-05"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-ALGEBRA",
+      "course_name": "대수",
+      "category": "일반 선택",
+      "standard_count": 18,
+      "areas": [
+        {
+          "unit_id": "HS-ALGEBRA-U01",
+          "unit_name": "지수함수와 로그함수",
+          "standard_count": 8,
+          "standard_codes": [
+            "12대수01-01",
+            "12대수01-02",
+            "12대수01-03",
+            "12대수01-04",
+            "12대수01-05",
+            "12대수01-06",
+            "12대수01-07",
+            "12대수01-08"
+          ]
+        },
+        {
+          "unit_id": "HS-ALGEBRA-U02",
+          "unit_name": "삼각함수",
+          "standard_count": 3,
+          "standard_codes": [
+            "12대수02-01",
+            "12대수02-02",
+            "12대수02-03"
+          ]
+        },
+        {
+          "unit_id": "HS-ALGEBRA-U03",
+          "unit_name": "수열",
+          "standard_count": 7,
+          "standard_codes": [
+            "12대수03-01",
+            "12대수03-02",
+            "12대수03-03",
+            "12대수03-04",
+            "12대수03-05",
+            "12대수03-06",
+            "12대수03-07"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-CALCULUS-1",
+      "course_name": "미적분Ⅰ",
+      "category": "일반 선택",
+      "standard_count": 20,
+      "areas": [
+        {
+          "unit_id": "HS-CALCULUS-1-U01",
+          "unit_name": "함수의 극한과 연속",
+          "standard_count": 4,
+          "standard_codes": [
+            "12미적Ⅰ-01-01",
+            "12미적Ⅰ-01-02",
+            "12미적Ⅰ-01-03",
+            "12미적Ⅰ-01-04"
+          ]
+        },
+        {
+          "unit_id": "HS-CALCULUS-1-U02",
+          "unit_name": "미분",
+          "standard_count": 10,
+          "standard_codes": [
+            "12미적Ⅰ-02-01",
+            "12미적Ⅰ-02-02",
+            "12미적Ⅰ-02-03",
+            "12미적Ⅰ-02-04",
+            "12미적Ⅰ-02-05",
+            "12미적Ⅰ-02-06",
+            "12미적Ⅰ-02-07",
+            "12미적Ⅰ-02-08",
+            "12미적Ⅰ-02-09",
+            "12미적Ⅰ-02-10"
+          ]
+        },
+        {
+          "unit_id": "HS-CALCULUS-1-U03",
+          "unit_name": "적분",
+          "standard_count": 6,
+          "standard_codes": [
+            "12미적Ⅰ-03-01",
+            "12미적Ⅰ-03-02",
+            "12미적Ⅰ-03-03",
+            "12미적Ⅰ-03-04",
+            "12미적Ⅰ-03-05",
+            "12미적Ⅰ-03-06"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-PROB-STAT",
+      "course_name": "확률과 통계",
+      "category": "일반 선택",
+      "standard_count": 16,
+      "areas": [
+        {
+          "unit_id": "HS-PROB-STAT-U01",
+          "unit_name": "경우의 수",
+          "standard_count": 3,
+          "standard_codes": [
+            "12확통01-01",
+            "12확통01-02",
+            "12확통01-03"
+          ]
+        },
+        {
+          "unit_id": "HS-PROB-STAT-U02",
+          "unit_name": "확률",
+          "standard_count": 6,
+          "standard_codes": [
+            "12확통02-01",
+            "12확통02-02",
+            "12확통02-03",
+            "12확통02-04",
+            "12확통02-05",
+            "12확통02-06"
+          ]
+        },
+        {
+          "unit_id": "HS-PROB-STAT-U03",
+          "unit_name": "통계",
+          "standard_count": 7,
+          "standard_codes": [
+            "12확통03-01",
+            "12확통03-02",
+            "12확통03-03",
+            "12확통03-04",
+            "12확통03-05",
+            "12확통03-06",
+            "12확통03-07"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-CALCULUS-2",
+      "course_name": "미적분Ⅱ",
+      "category": "진로 선택",
+      "standard_count": 23,
+      "areas": [
+        {
+          "unit_id": "HS-CALCULUS-2-U01",
+          "unit_name": "수열의 극한",
+          "standard_count": 5,
+          "standard_codes": [
+            "12미적Ⅱ-01-01",
+            "12미적Ⅱ-01-02",
+            "12미적Ⅱ-01-03",
+            "12미적Ⅱ-01-04",
+            "12미적Ⅱ-01-05"
+          ]
+        },
+        {
+          "unit_id": "HS-CALCULUS-2-U02",
+          "unit_name": "미분법",
+          "standard_count": 11,
+          "standard_codes": [
+            "12미적Ⅱ-02-01",
+            "12미적Ⅱ-02-02",
+            "12미적Ⅱ-02-03",
+            "12미적Ⅱ-02-04",
+            "12미적Ⅱ-02-05",
+            "12미적Ⅱ-02-06",
+            "12미적Ⅱ-02-07",
+            "12미적Ⅱ-02-08",
+            "12미적Ⅱ-02-09",
+            "12미적Ⅱ-02-10",
+            "12미적Ⅱ-02-11"
+          ]
+        },
+        {
+          "unit_id": "HS-CALCULUS-2-U03",
+          "unit_name": "적분법",
+          "standard_count": 7,
+          "standard_codes": [
+            "12미적Ⅱ-03-01",
+            "12미적Ⅱ-03-02",
+            "12미적Ⅱ-03-03",
+            "12미적Ⅱ-03-04",
+            "12미적Ⅱ-03-05",
+            "12미적Ⅱ-03-06",
+            "12미적Ⅱ-03-07"
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": "HS-GEOMETRY",
+      "course_name": "기하",
+      "category": "진로 선택",
+      "standard_count": 14,
+      "areas": [
+        {
+          "unit_id": "HS-GEOMETRY-U01",
+          "unit_name": "이차곡선",
+          "standard_count": 4,
+          "standard_codes": [
+            "12기하01-01",
+            "12기하01-02",
+            "12기하01-03",
+            "12기하01-04"
+          ]
+        },
+        {
+          "unit_id": "HS-GEOMETRY-U02",
+          "unit_name": "공간도형과 공간좌표",
+          "standard_count": 5,
+          "standard_codes": [
+            "12기하02-01",
+            "12기하02-02",
+            "12기하02-03",
+            "12기하02-04",
+            "12기하02-05"
+          ]
+        },
+        {
+          "unit_id": "HS-GEOMETRY-U03",
+          "unit_name": "벡터",
+          "standard_count": 5,
+          "standard_codes": [
+            "12기하03-01",
+            "12기하03-02",
+            "12기하03-03",
+            "12기하03-04",
+            "12기하03-05"
+          ]
+        }
+      ]
+    }
+  ]
+}

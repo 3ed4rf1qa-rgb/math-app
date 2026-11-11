@@ -1,0 +1,217 @@
+{
+  "metadata": {
+    "package_id": "SAMPLE-CALC1-02-05",
+    "generation_mode": "authored_demo",
+    "model": null,
+    "created_at_utc": "2026-11-10T00:00:00+00:00",
+    "teacher_review_required": true
+  },
+  "selection": {
+    "course_id": "HS-CALCULUS-1",
+    "course_name": "미적분Ⅰ",
+    "unit_id": "HS-CALCULUS-1-U02",
+    "unit_name": "미분",
+    "standard_code": "12미적Ⅰ-02-05",
+    "standard_content": "미분계수와 접선의 기울기의 관계를 이해하고, 접선의 방정식을 구할 수 있다.",
+    "concept_ids": [
+      "CAL1-DER-04",
+      "CAL1-DER-09"
+    ],
+    "concept_names": [
+      "미분계수의 기하·물리적 의미",
+      "접선의 기울기와 접선의 방정식"
+    ],
+    "official_source": {
+      "document": "교육부 고시 제2022-33호 [별책 8] 수학과 교육과정",
+      "document_date": "2022-12-22",
+      "printed_pages": "114-115",
+      "pdf_text_lines": "2684-2712",
+      "web_source_ref": "turn905142view3",
+      "official_url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=141&boardSeq=93458&lev=0&statusYN=W"
+    }
+  },
+  "design": {
+    "principle_ids": [
+      "DP01",
+      "DP02",
+      "DP03",
+      "DP08"
+    ],
+    "context": "위치-시간 그래프에서 특정 순간의 변화율을 해석해야 하는 상황.",
+    "driving_question": "한 점에서 곡선의 접선 기울기를 어떻게 구할 수 있을까?",
+    "learning_objectives": [
+      "할선의 기울기를 계산하고 h의 변화에 따른 값을 비교한다.",
+      "미분계수를 순간변화율과 접선 기울기로 해석한다.",
+      "주어진 점에서 접선의 방정식을 구한다."
+    ],
+    "inquiry_steps": [
+      {
+        "phase": "예측",
+        "teacher_action": "x=1과 x=1+h를 지나는 할선 기울기의 변화를 예측하게 한다.",
+        "student_evidence": "h가 0에 가까워질 때의 기울기를 추측한다."
+      },
+      {
+        "phase": "조작·관찰",
+        "teacher_action": "h를 양·음 방향으로 변화시키며 그래프와 표를 확인하게 한다.",
+        "student_evidence": "h와 할선 기울기 2+h의 표를 작성한다."
+      },
+      {
+        "phase": "개념화",
+        "teacher_action": "관찰값의 경향을 미분계수와 접선 기울기로 연결한다.",
+        "student_evidence": "미분계수의 의미를 수식과 말로 설명한다."
+      },
+      {
+        "phase": "적용",
+        "teacher_action": "함수 f(x)=x^3-3x^2+2의 x=1에서 접선을 구하게 한다.",
+        "student_evidence": "도함수, 접점, 기울기, 접선 방정식을 제시한다."
+      }
+    ],
+    "representations": [
+      "함수 그래프",
+      "할선과 접선",
+      "수치표",
+      "도함수 식"
+    ],
+    "misconception_support": [
+      {
+        "misconception_id": "MIS-DER-05",
+        "diagnostic_question": "접선 기울기는 특정 접점에서의 국소적인 변화율이다.",
+        "corrective_feedback": "같은 곡선의 서로 다른 점에서 접선 기울기를 비교한다."
+      },
+      {
+        "misconception_id": "MIS-DER-12",
+        "diagnostic_question": "접선은 (a,f(a))를 지나며 기울기는 f′(a)이다.",
+        "corrective_feedback": "점-기울기 식을 먼저 쓰고 각 요소를 대입한다."
+      }
+    ],
+    "differentiation": {
+      "support": [
+        "도함수 계산과 접점 좌표를 단계별로 확인하는 힌트를 제공한다."
+      ],
+      "extension": [
+        "접점의 x좌표를 문자 a로 두고 접선 방정식을 일반화한다."
+      ]
+    }
+  },
+  "item": {
+    "item_type": "서술형·추론형",
+    "cognitive_demand": "적용·추론",
+    "prompt": "함수 f(x)=x^3-3x^2+2에 대하여 x=1에서의 접선의 방정식을 구하고, 미분계수와 접선의 기울기의 관계를 설명하시오.",
+    "expected_answer": "f'(x)=3x^2-6x이므로 f'(1)=-3이고 f(1)=0이다. 따라서 접선은 y=-3(x-1), 즉 y=-3x+3이다. 미분계수 f'(1)은 x=1에서의 접선 기울기이다.",
+    "solution_steps": [
+      "도함수를 구하면 f'(x)=3x^2-6x이다.",
+      "f(1)=0이므로 접점은 (1,0)이다.",
+      "f'(1)=3-6=-3이므로 접선의 기울기는 -3이다.",
+      "점기울기식 y-0=-3(x-1)을 정리하면 y=-3x+3이다."
+    ],
+    "rubric": {
+      "total_points": 10,
+      "criteria": [
+        {
+          "criterion": "도함수 계산",
+          "points": 3,
+          "levels": {
+            "A": "도함수를 정확히 구하고 계산 근거를 명확히 제시한다.",
+            "B": "도함수를 정확히 구하나 일부 설명이 생략된다.",
+            "C": "핵심 미분은 수행하나 단순 계산 실수가 있다.",
+            "D": "미분법을 부분적으로 적용하나 식이 완성되지 않는다.",
+            "E": "도함수 계산의 핵심 절차를 수행하지 못한다."
+          }
+        },
+        {
+          "criterion": "접점과 기울기 해석",
+          "points": 2,
+          "levels": {
+            "A": "접점과 미분계수의 기하적 의미를 정확히 연결한다.",
+            "B": "접점과 기울기를 정확히 찾으나 의미 설명이 간략하다.",
+            "C": "접점 또는 기울기 중 하나를 정확히 제시한다.",
+            "D": "접점과 기울기의 관계를 부분적으로 이해한다.",
+            "E": "접점 또는 접선 기울기를 식별하지 못한다."
+          }
+        },
+        {
+          "criterion": "접선 방정식 구성",
+          "points": 3,
+          "levels": {
+            "A": "점기울기식을 정확히 세우고 정리한다.",
+            "B": "접선 방정식은 정확하나 전개 근거가 부족하다.",
+            "C": "점기울기식은 세우나 단순 정리 오류가 있다.",
+            "D": "기울기 또는 접점만 이용해 부분적으로 식을 세운다.",
+            "E": "접선 방정식을 구성하지 못한다."
+          }
+        },
+        {
+          "criterion": "논리적 설명",
+          "points": 2,
+          "levels": {
+            "A": "미분계수와 접선 기울기의 관계를 정확한 근거로 설명한다.",
+            "B": "관계를 정확히 말하지만 근거가 제한적이다.",
+            "C": "관계는 언급하나 설명이 불완전하다.",
+            "D": "관련 용어를 사용하지만 관계 설명이 모호하다.",
+            "E": "두 개념의 관계를 설명하지 못한다."
+          }
+        }
+      ]
+    }
+  },
+  "formative_check": {
+    "questions": [
+      "x=1에서 미분계수가 접선 기울기로 해석되는 이유를 설명할 수 있는가?",
+      "접선 방정식에 접점과 기울기가 올바르게 반영되었는가?"
+    ],
+    "success_criteria": [
+      "도함수와 특정 점의 미분계수를 정확히 구한다.",
+      "접점과 기울기를 이용해 접선 방정식을 구성한다."
+    ]
+  },
+  "validation": {
+    "status": "PASS_WITH_TEACHER_REVIEW",
+    "checks": [
+      {
+        "name": "package_schema",
+        "status": "PASS",
+        "detail": "최종 패키지가 JSON Schema 구조를 만족한다."
+      },
+      {
+        "name": "official_standard_binding",
+        "status": "PASS",
+        "detail": "선택된 성취기준 코드와 본문이 공식 데이터와 일치한다."
+      },
+      {
+        "name": "course_binding",
+        "status": "PASS",
+        "detail": "과목 및 단원 ID가 공식 성취기준 레코드와 일치한다."
+      },
+      {
+        "name": "concept_references",
+        "status": "PASS",
+        "detail": "패키지의 개념 ID가 선택 성취기준에 연결된 지식 데이터에 존재한다."
+      },
+      {
+        "name": "design_principle_references",
+        "status": "PASS",
+        "detail": "사용한 교수설계 원칙 ID가 5단계 데이터베이스에 존재한다."
+      },
+      {
+        "name": "rubric_points",
+        "status": "PASS",
+        "detail": "채점기준 배점 합계 10점 / 설정 총점 10점 (10점 기준)."
+      },
+      {
+        "name": "rubric_levels",
+        "status": "PASS",
+        "detail": "모든 평가요소에 A·B·C·D·E 수준 기술이 존재한다."
+      },
+      {
+        "name": "item_completeness",
+        "status": "PASS",
+        "detail": "문항·정답·풀이가 모두 작성되어 있다."
+      }
+    ],
+    "blocking_errors": [],
+    "warnings": [
+      "수학적 정답·풀이의 완전한 타당성은 자동 구조 검사만으로 증명되지 않는다. 교사 검토가 필요하다.",
+      "개념 연결과 오개념 진단 데이터는 프로젝트가 작성한 교수설계 초안이며 전문가 검토 상태는 pending이다."
+    ]
+  }
+}
