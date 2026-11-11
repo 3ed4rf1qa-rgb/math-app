@@ -1,0 +1,999 @@
+{
+  "description": "과목 내 학습 순서 제안. 공식 선수학습 관계가 아니며 교사 검토 필요.",
+  "relations": [
+    {
+      "from_concept_id": "CPT-CM1-POL-01",
+      "to_concept_id": "CPT-CM1-POL-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-POL-02",
+      "to_concept_id": "CPT-CM1-POL-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-01",
+      "to_concept_id": "CPT-CM1-EQ-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-02",
+      "to_concept_id": "CPT-CM1-EQ-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-03",
+      "to_concept_id": "CPT-CM1-EQ-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-04",
+      "to_concept_id": "CPT-CM1-EQ-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-05",
+      "to_concept_id": "CPT-CM1-EQ-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-06",
+      "to_concept_id": "CPT-CM1-EQ-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-07",
+      "to_concept_id": "CPT-CM1-EQ-08",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-EQ-08",
+      "to_concept_id": "CPT-CM1-EQ-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-COUNT-01",
+      "to_concept_id": "CPT-CM1-COUNT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-COUNT-02",
+      "to_concept_id": "CPT-CM1-COUNT-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM1-MAT-01",
+      "to_concept_id": "CPT-CM1-MAT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-COORD-01",
+      "to_concept_id": "CPT-CM2-COORD-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-COORD-02",
+      "to_concept_id": "CPT-CM2-COORD-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-COORD-03",
+      "to_concept_id": "CPT-CM2-COORD-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-COORD-04",
+      "to_concept_id": "CPT-CM2-COORD-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-COORD-05",
+      "to_concept_id": "CPT-CM2-COORD-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-SET-01",
+      "to_concept_id": "CPT-CM2-SET-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-SET-02",
+      "to_concept_id": "CPT-CM2-SET-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-SET-03",
+      "to_concept_id": "CPT-CM2-LOGIC-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-LOGIC-01",
+      "to_concept_id": "CPT-CM2-LOGIC-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-LOGIC-02",
+      "to_concept_id": "CPT-CM2-LOGIC-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-LOGIC-03",
+      "to_concept_id": "CPT-CM2-LOGIC-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-FUNC-01",
+      "to_concept_id": "CPT-CM2-FUNC-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-FUNC-02",
+      "to_concept_id": "CPT-CM2-FUNC-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-FUNC-03",
+      "to_concept_id": "CPT-CM2-FUNC-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CM2-FUNC-04",
+      "to_concept_id": "CPT-CM2-FUNC-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-EXP-01",
+      "to_concept_id": "CPT-ALG-EXP-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-EXP-02",
+      "to_concept_id": "CPT-ALG-LOG-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-LOG-01",
+      "to_concept_id": "CPT-ALG-LOG-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-LOG-02",
+      "to_concept_id": "CPT-ALG-EXP-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-EXP-03",
+      "to_concept_id": "CPT-ALG-EXP-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-TRIG-01",
+      "to_concept_id": "CPT-ALG-TRIG-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-TRIG-02",
+      "to_concept_id": "CPT-ALG-TRIG-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-SEQ-01",
+      "to_concept_id": "CPT-ALG-SEQ-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-SEQ-02",
+      "to_concept_id": "CPT-ALG-SEQ-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-SEQ-03",
+      "to_concept_id": "CPT-ALG-SEQ-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-SEQ-04",
+      "to_concept_id": "CPT-ALG-SEQ-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-ALG-SEQ-05",
+      "to_concept_id": "CPT-ALG-SEQ-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-PROB-01",
+      "to_concept_id": "CPT-PS-PROB-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-PROB-02",
+      "to_concept_id": "CPT-PS-PROB-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-PROB-04",
+      "to_concept_id": "CPT-PS-PROB-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-PROB-05",
+      "to_concept_id": "CPT-PS-PROB-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-PROB-06",
+      "to_concept_id": "CPT-PS-PROB-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-STAT-01",
+      "to_concept_id": "CPT-PS-STAT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-STAT-02",
+      "to_concept_id": "CPT-PS-STAT-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-STAT-03",
+      "to_concept_id": "CPT-PS-STAT-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-STAT-04",
+      "to_concept_id": "CPT-PS-STAT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-PS-STAT-05",
+      "to_concept_id": "CPT-PS-STAT-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-LIM-01",
+      "to_concept_id": "CPT-CAL2-LIM-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-LIM-02",
+      "to_concept_id": "CPT-CAL2-LIM-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-LIM-03",
+      "to_concept_id": "CPT-CAL2-SER-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-SER-01",
+      "to_concept_id": "CPT-CAL2-SER-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-01",
+      "to_concept_id": "CPT-CAL2-TRIG-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-TRIG-04",
+      "to_concept_id": "CPT-CAL2-TRIG-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-TRIG-05",
+      "to_concept_id": "CPT-CAL2-DIF-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-02",
+      "to_concept_id": "CPT-CAL2-DIF-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-03",
+      "to_concept_id": "CPT-CAL2-DIF-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-04",
+      "to_concept_id": "CPT-CAL2-DIF-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-05",
+      "to_concept_id": "CPT-CAL2-DIF-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-06",
+      "to_concept_id": "CPT-CAL2-DIF-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-07",
+      "to_concept_id": "CPT-CAL2-DIF-08",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-DIF-08",
+      "to_concept_id": "CPT-CAL2-DIF-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-01",
+      "to_concept_id": "CPT-CAL2-INT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-02",
+      "to_concept_id": "CPT-CAL2-INT-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-03",
+      "to_concept_id": "CPT-CAL2-INT-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-04",
+      "to_concept_id": "CPT-CAL2-INT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-05",
+      "to_concept_id": "CPT-CAL2-INT-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-CAL2-INT-06",
+      "to_concept_id": "CPT-CAL2-INT-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-CONIC-01",
+      "to_concept_id": "CPT-GEO-CONIC-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-CONIC-02",
+      "to_concept_id": "CPT-GEO-CONIC-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-CONIC-03",
+      "to_concept_id": "CPT-GEO-CONIC-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-SPACE-01",
+      "to_concept_id": "CPT-GEO-SPACE-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-SPACE-02",
+      "to_concept_id": "CPT-GEO-SPACE-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-SPACE-03",
+      "to_concept_id": "CPT-GEO-SPACE-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-SPACE-04",
+      "to_concept_id": "CPT-GEO-SPACE-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-VEC-01",
+      "to_concept_id": "CPT-GEO-VEC-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-VEC-02",
+      "to_concept_id": "CPT-GEO-VEC-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-VEC-03",
+      "to_concept_id": "CPT-GEO-VEC-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CPT-GEO-VEC-04",
+      "to_concept_id": "CPT-GEO-VEC-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "authored_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-01",
+      "to_concept_id": "CAL1-LIM-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-01",
+      "to_concept_id": "CAL1-LIM-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-01",
+      "to_concept_id": "CAL1-CNT-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-02",
+      "to_concept_id": "CAL1-LIM-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-02",
+      "to_concept_id": "CAL1-CNT-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-03",
+      "to_concept_id": "CAL1-LIM-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-03",
+      "to_concept_id": "CAL1-CNT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-04",
+      "to_concept_id": "CAL1-CNT-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-LIM-04",
+      "to_concept_id": "CAL1-DER-01",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-01",
+      "to_concept_id": "CAL1-CNT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-01",
+      "to_concept_id": "CAL1-CNT-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-01",
+      "to_concept_id": "CAL1-DER-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-02",
+      "to_concept_id": "CAL1-CNT-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-02",
+      "to_concept_id": "CAL1-CNT-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-03",
+      "to_concept_id": "CAL1-CNT-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-03",
+      "to_concept_id": "CAL1-DER-12",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-04",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-CNT-04",
+      "to_concept_id": "CAL1-DER-14",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-01",
+      "to_concept_id": "CAL1-DER-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-01",
+      "to_concept_id": "CAL1-DER-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-01",
+      "to_concept_id": "CAL1-DER-15",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-02",
+      "to_concept_id": "CAL1-DER-03",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-02",
+      "to_concept_id": "CAL1-DER-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-03",
+      "to_concept_id": "CAL1-DER-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-03",
+      "to_concept_id": "CAL1-DER-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-03",
+      "to_concept_id": "CAL1-DER-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-04",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-04",
+      "to_concept_id": "CAL1-DER-15",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-05",
+      "to_concept_id": "CAL1-DER-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-05",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-06",
+      "to_concept_id": "CAL1-DER-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-06",
+      "to_concept_id": "CAL1-DER-08",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-06",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-07",
+      "to_concept_id": "CAL1-DER-08",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-07",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-07",
+      "to_concept_id": "CAL1-DER-13",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-08",
+      "to_concept_id": "CAL1-DER-09",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-08",
+      "to_concept_id": "CAL1-DER-11",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-08",
+      "to_concept_id": "CAL1-DER-12",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-09",
+      "to_concept_id": "CAL1-DER-10",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-09",
+      "to_concept_id": "CAL1-DER-13",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-10",
+      "to_concept_id": "CAL1-DER-11",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-10",
+      "to_concept_id": "CAL1-DER-14",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-11",
+      "to_concept_id": "CAL1-DER-12",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-11",
+      "to_concept_id": "CAL1-DER-13",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-11",
+      "to_concept_id": "CAL1-DER-14",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-12",
+      "to_concept_id": "CAL1-DER-13",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-12",
+      "to_concept_id": "CAL1-DER-14",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-13",
+      "to_concept_id": "CAL1-DER-14",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-DER-15",
+      "to_concept_id": "CAL1-INT-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-01",
+      "to_concept_id": "CAL1-INT-02",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-01",
+      "to_concept_id": "CAL1-INT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-02",
+      "to_concept_id": "CAL1-INT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-03",
+      "to_concept_id": "CAL1-INT-04",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-03",
+      "to_concept_id": "CAL1-INT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-03",
+      "to_concept_id": "CAL1-INT-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-04",
+      "to_concept_id": "CAL1-INT-05",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-04",
+      "to_concept_id": "CAL1-INT-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-04",
+      "to_concept_id": "CAL1-INT-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-05",
+      "to_concept_id": "CAL1-INT-06",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    },
+    {
+      "from_concept_id": "CAL1-INT-05",
+      "to_concept_id": "CAL1-INT-07",
+      "relation_type": "suggested_learning_sequence",
+      "status": "stage3_inherited_pedagogical_proposal",
+      "teacher_review_status": "pending"
+    }
+  ]
+}

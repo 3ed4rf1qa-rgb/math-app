@@ -1,0 +1,224 @@
+{
+  "type": "object",
+  "required": [
+    "design",
+    "item",
+    "formative_check"
+  ],
+  "properties": {
+    "design": {
+      "type": "object",
+      "required": [
+        "principle_ids",
+        "context",
+        "driving_question",
+        "learning_objectives",
+        "inquiry_steps",
+        "representations",
+        "misconception_support",
+        "differentiation"
+      ],
+      "properties": {
+        "principle_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "context": {
+          "type": "string"
+        },
+        "driving_question": {
+          "type": "string"
+        },
+        "learning_objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inquiry_steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phase": {
+                "type": "string"
+              },
+              "teacher_action": {
+                "type": "string"
+              },
+              "student_evidence": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "phase",
+              "teacher_action",
+              "student_evidence"
+            ]
+          }
+        },
+        "representations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "misconception_support": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "misconception_id": {
+                "type": "string"
+              },
+              "diagnostic_question": {
+                "type": "string"
+              },
+              "corrective_feedback": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "misconception_id",
+              "diagnostic_question",
+              "corrective_feedback"
+            ]
+          }
+        },
+        "differentiation": {
+          "type": "object",
+          "properties": {
+            "support": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "extension": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "support",
+            "extension"
+          ]
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "required": [
+        "item_type",
+        "cognitive_demand",
+        "prompt",
+        "expected_answer",
+        "solution_steps",
+        "rubric"
+      ],
+      "properties": {
+        "item_type": {
+          "type": "string"
+        },
+        "cognitive_demand": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "expected_answer": {
+          "type": "string"
+        },
+        "solution_steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rubric": {
+          "type": "object",
+          "required": [
+            "total_points",
+            "criteria"
+          ],
+          "properties": {
+            "total_points": {
+              "type": "integer"
+            },
+            "criteria": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "criterion",
+                  "points",
+                  "levels"
+                ],
+                "properties": {
+                  "criterion": {
+                    "type": "string"
+                  },
+                  "points": {
+                    "type": "integer"
+                  },
+                  "levels": {
+                    "type": "object",
+                    "properties": {
+                      "A": {
+                        "type": "string"
+                      },
+                      "B": {
+                        "type": "string"
+                      },
+                      "C": {
+                        "type": "string"
+                      },
+                      "D": {
+                        "type": "string"
+                      },
+                      "E": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "A",
+                      "B",
+                      "C",
+                      "D",
+                      "E"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "formative_check": {
+      "type": "object",
+      "required": [
+        "questions",
+        "success_criteria"
+      ],
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
