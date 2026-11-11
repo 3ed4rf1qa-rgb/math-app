@@ -230,7 +230,6 @@ def create_complete_package_docx(
       f"[수학 탐구 활동지] {sheet.get('활동지제목', '수학 탐구 학습')}", level=1
   )
 
-  # 소속 기입란 테이블
   info_table = doc.add_table(rows=2, cols=4)
   info_data = [
       ("과목", subject, "단원", unit),
@@ -250,7 +249,6 @@ def create_complete_package_docx(
   doc.add_paragraph(f"📌 관련 성취기준: [{code}] {content}")
   doc.add_paragraph("---")
 
-  # 2×2 영역 출력
   for area in sheet.get("영역목록", []):
     doc.add_heading(area.get("영역제목", "탐구 영역"), level=2)
     doc.add_paragraph(area.get("탐구질문_및_활동지시문", ""))
@@ -460,14 +458,15 @@ if st.button(
 # ---------------------------------------------------------
 # 6. 결과 출력 영역 (4대 핵심 탭)
 # ---------------------------------------------------------
-if "complete_package" in st.session_state and st.session_state["complete_package"]:
+if "complete_package" in st.session_state and st.session_state[
+    "complete_package"
+]:
   pkg = st.session_state["complete_package"]
   subj = st.session_state.get("sel_subj", "")
   unit = st.session_state.get("sel_unit", "")
   code = st.session_state.get("sel_code", "")
   content = st.session_state.get("sel_content", "")
 
-  # 전체 통합 다운로드 버튼 생성
   docx_buffer = create_complete_package_docx(subj, unit, code, content, pkg)
   st.download_button(
       label="📥 전체 수업 자료 패키지 Word(.docx) 다운로드 (활동지+해설+지도안)",
@@ -481,7 +480,6 @@ if "complete_package" in st.session_state and st.session_state["complete_package
   )
   st.markdown("---")
 
-  # 요구사항에 맞춘 4가지 탭 구성 (기본 화면은 학생용 활동지)
   tab1, tab2, tab3, tab4 = st.tabs([
       "📄 1. 학생용 활동지 미리보기",
       "👩‍🏫 2. 교사용 수업 지도안",
@@ -551,7 +549,7 @@ if "complete_package" in st.session_state and st.session_state["complete_package
         st.markdown(
             f"- {step.get('단계', '')} *(배점: {step.get('배점', '')})*"
         )
-      namespaces = st.markdown("---")
+      st.markdown("---")
 
   # [탭 4] 수준별 활동지 안내
   with tab4:
