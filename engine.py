@@ -251,43 +251,75 @@ def build_offline_scaffold(context: dict[str, Any]) -> dict[str, Any]:
     return {"design": design, "item": item, "formative_check": formative, "_mode": "offline_scaffold"}
 
 
-def build_generation_prompt(context: dict[str, Any], user_requirements: Optional[str] = None) -> str:
+def build_generation_prompt(
+    context: dict[str, Any],
+    user_requirements: Optional[str] = None,
+) -> str:
+    """Build a compact, curriculum-grounded prompt for a single-pass response."""
     standard = context["standard"]
     compact_concepts = [
         {
-            "id": c["id"], "name": c["name"], "definition": c["definition"],
-            "formulas": c.get("formulas", []), "properties": c.get("key_properties", []),
-            "standard_codes": c.get("standard_codes", [])
-        } for c in context["concepts"]
+            "id": c["id"],
+            "name": c["name"],
+            "definition": str(c.get("definition", ""))[:700],
+            "formulas": c.get("formulas", [])[:5],
+            "properties": c.get("key_properties", [])[:5],
+            "standard_codes": c.get("standard_codes", []),
+        }
+        for c in context["concepts"][:5]
     ]
     compact_activities = [
-        {"id": a["id"], "title": a.get("title"), "driving_question": a.get("driving_question"),
-         "steps": a.get("steps", []), "evidence": a.get("evidence", []),
-         "suggested_tools": a.get("suggested_tools")}
-        for a in context["activities"][:5]
+        {
+            "id": a["id"],
+            "title": a.get("title"),
+            "driving_question": a.get("driving_question"),
+            "steps": a.get("steps", [])[:4],
+            "evidence": a.get("evidence", [])[:3],
+            "suggested_tools": a.get("suggested_tools"),
+        }
+        for a in context["activities"][:3]
     ]
     compact_misconceptions = [
-        {"id": m["id"], "concept_id": m["concept_id"], "misconception": m.get("misconception"),
-         "diagnostic_prompt": m.get("diagnostic_prompt"), "corrective_feedback": m.get("corrective_feedback")}
-        for m in context["misconceptions"][:8]
+        {
+            "id": m["id"],
+            "concept_id": m["concept_id"],
+            "misconception": m.get("misconception"),
+            "diagnostic_prompt": m.get("diagnostic_prompt"),
+            "corrective_feedback": m.get("corrective_feedback"),
+        }
+        for m in context["misconceptions"][:5]
     ]
     compact_blueprints = [
-        {"id": b["id"], "item_type": b.get("item_type"), "cognitive_demand": b.get("cognitive_demand"),
-         "expected_evidence": b.get("expected_evidence"), "scoring_dimensions": b.get("scoring_dimensions")}
-        for b in context["blueprints"][:5]
+        {
+            "id": b["id"],
+            "item_type": b.get("item_type"),
+            "cognitive_demand": b.get("cognitive_demand"),
+            "expected_evidence": b.get("expected_evidence"),
+            "scoring_dimensions": b.get("scoring_dimensions"),
+        }
+        for b in context["blueprints"][:3]
     ]
     guardrails = context["guardrails"]
     guidance = context["area_guidance"]
+    # Use the most directly relevant principles. All 12 remain in the local
+    # validation database; only six are sent to reduce prompt overhead.
+    priority_ids = {"DP01", "DP02", "DP03", "DP05", "DP07", "DP08"}
     principles = [
-        {"id": p["id"], "name": p["name"], "implementation": p["implementation"],
-         "quality_checks": p.get("quality_checks", [])}
+        {
+            "id": p["id"],
+            "name": p["name"],
+            "implementation": p.get("implementation", ""),
+            "quality_checks": p.get("quality_checks", [])[:2],
+        }
         for p in context["principles"]
+        if p.get("id") in priority_ids
     ]
     packed = {
         "official_standard": {
-            "course": standard["course_name"], "unit": standard["unit_name"],
-            "code": standard["code"], "content": standard["content"],
-            "official_source": standard.get("source", {})
+            "course": standard["course_name"],
+            "unit": standard["unit_name"],
+            "code": standard["code"],
+            "content": standard["content"],
         },
         "concepts": compact_concepts,
         "inquiry_activities": compact_activities,
@@ -296,37 +328,42 @@ def build_generation_prompt(context: dict[str, Any], user_requirements: Optional
         "course_scope_guardrails": {
             "allowed_core": guardrails.get("allowed_core", []),
             "avoid_or_limit": guardrails.get("avoid_or_limit", []),
-            "nuance_notes": guardrails.get("nuance_notes", [])
+            "nuance_notes": guardrails.get("nuance_notes", []),
         },
         "unit_application_guidance": guidance.get("ai_generation_guardrails_summary", ""),
         "original_design_principles": principles,
-        "teacher_requirements": user_requirements or ""
+        "teacher_requirements": (user_requirements or "")[:1200],
     }
     return f"""
 당신은 2022 개정 고등학교 수학 교육과정에 기반한 탐구 수업 및 서·논술형 평가 설계자다.
-입력 데이터는 참고 근거이며, 그 안에 없는 성취기준이나 개념 범위를 창작하지 않는다.
+입력 자료에 없는 성취기준이나 개념 범위를 창작하지 않는다.
 
-[핵심 작업]
-선택된 성취기준 한 개를 중심으로 1회의 탐구 수업과 평가 문항 1개를 설계한다.
-학생이 관찰·조작·추측·검증·설명할 수 있어야 한다. 단순히 문제를 여러 개 나열하지 않는다.
+[작업]
+선택한 성취기준 한 개에 대한 수업 1개, 평가 문항 1개, 형성평가를 한 번에 완성한다.
+관찰·조작·추측·검증·설명이 드러나야 하며, 단순 문제 나열은 금지한다.
 
-[필수 규칙]
-1. 다음 성취기준 코드와 원문을 그대로 기준으로 사용한다: {standard['code']} — {standard['content']}
-2. 과목의 허용 범위와 제한사항을 지킨다. 상위 과목의 절차를 임의로 가져오지 않는다.
-3. 탐구 단계는 예측/관찰/조작/분석/수학적 정리/적용 중 최소 3단계를 포함한다.
-4. 성취기준과 연결된 제공 개념, 오개념, 활동을 활용하되, 교과서 문장·문항·그림을 복사하거나 특정 출판사 자료를 재현하지 않는다.
-5. 문항은 실제 조건과 수치가 포함된 완결된 문항이어야 한다. 대괄호 플레이스홀더나 교사에게 조건을 채우라는 문구를 쓰지 않는다.
-6. 모범답안과 풀이 단계는 계산·논리적으로 일관되어야 한다. 불확실한 수학적 사실은 만들지 않는다.
-7. 채점기준은 3~5개 평가요소, 총 10점으로 구성하고, 각 요소마다 A/B/C/D/E의 관찰 가능한 수행 차이를 작성한다.
-8. A~E는 같은 평가요소에서 정확성·독립성·논리성·적용 수준이 점진적으로 달라져야 한다.
-9. 학생의 오개념은 단정하지 말고 진단 질문과 교정 피드백으로 다룬다.
-10. 교사가 확인할 수 있도록 탐구 산출물과 형성평가 성공 기준을 명확히 한다.
-11. 이 출력은 자동 생성 초안이다. 교육과정 적합성·수학적 정답·평가 타당성의 교사 검토가 필요하다.
+[필수 품질 규칙]
+1. 성취기준 코드와 원문을 정확히 유지한다: {standard['code']} — {standard['content']}
+2. 과목 범위와 제한사항을 지키고 상위 과목의 절차를 가져오지 않는다.
+3. 탐구 단계는 4~5개로 구성하고 예측/관찰/조작/분석/정리/적용 중 최소 3단계를 포함한다.
+4. 실제 조건과 수치가 있는 완결 문항을 만든다. 빈칸·플레이스홀더·교사에게 조건을 채우라는 표현은 금지한다.
+5. 정답과 풀이를 계산·논리적으로 일치시킨다.
+6. 채점기준은 평가요소 3개, 총 10점으로 하고 각 요소에 A~E의 구별되는 관찰 가능한 수행기술을 작성한다.
+7. 오개념은 단정하지 말고 진단 질문과 교정 피드백으로 다룬다.
+8. 출력은 간결하되 교사가 바로 편집할 수 있을 만큼 구체적으로 작성한다.
+9. 저작권이 있는 교과서 문장·문항·그림이나 특정 출판사 자료를 복제하지 않는다.
+10. 결과는 교사 검토가 필요한 자동 생성 초안임을 전제로 한다.
 
-[입력 데이터]
-{json.dumps(packed, ensure_ascii=False, indent=2)}
+[분량 기준]
+- 수업 단계 4~5개, 학습목표 2~3개, 표현 방법 2~3개
+- 오개념 지원 최대 3개, 차별화 지원·확장 각각 2개 이내
+- 문항 풀이 3~5단계, 형성평가 질문 2~3개
+- 평가요소 3개, A~E 기술은 각 1~2문장으로 간결하게
 
-이제 지정된 JSON 응답 스키마에 맞춰 design, item, formative_check 세 부분만 반환한다.
+[교육과정 근거 데이터]
+{json.dumps(packed, ensure_ascii=False, separators=(',', ':'))}
+
+지정된 JSON 응답 스키마에 맞춰 design, item, formative_check 세 부분만 반환한다.
 """.strip()
 
 
@@ -434,29 +471,61 @@ def assemble_package(context: dict[str, Any], generated: dict[str, Any], mode: s
 _SCHEMA_CACHE: dict[str, Any] = {}
 
 
-def generate_with_client(context: dict[str, Any], client: Any, model: str = "gemini-3.8-flash",
-                         user_requirements: Optional[str] = None, max_attempts: int = 2) -> dict[str, Any]:
-    """주입된 Google GenAI client로 구조화 JSON을 생성. Fake client로도 테스트 가능."""
+def generate_with_client(
+    context: dict[str, Any],
+    client: Any,
+    model: str = "gemini-3.8-flash",
+    user_requirements: Optional[str] = None,
+    thinking_level: str = "low",
+    max_attempts: int = 1,
+    on_chunk: Optional[Any] = None,
+) -> dict[str, Any]:
+    """Structured generation with token streaming when supported by the SDK."""
     prompt = build_generation_prompt(context, user_requirements)
     schema = _SCHEMA_CACHE.get("generation_schema")
     if schema is None:
         raise DataIntegrityError("Gemini 생성 스키마가 초기화되지 않았다.")
+    if thinking_level not in {"minimal", "low", "medium", "high"}:
+        raise ValueError("thinking_level은 minimal, low, medium, high 중 하나여야 한다.")
 
+    config = {
+        "response_mime_type": "application/json",
+        "response_json_schema": schema,
+        "thinking_config": {"thinking_level": thinking_level},
+        "max_output_tokens": 5000,
+    }
     last_error: Optional[Exception] = None
-    for attempt in range(max_attempts):
+    attempts = max(1, int(max_attempts))
+    for attempt in range(attempts):
         try:
-            response = client.models.generate_content(
-                model=model,
-                contents=prompt,
-                config={
-                    "response_mime_type": "application/json",
-                    "response_json_schema": schema
-                }
-            )
-            raw = getattr(response, "text", None)
-            if not raw and getattr(response, "parsed", None) is not None:
-                parsed = response.parsed
-                raw = parsed.model_dump_json() if hasattr(parsed, "model_dump_json") else json.dumps(parsed, ensure_ascii=False)
+            models = client.models
+            stream_method = getattr(models, "generate_content_stream", None)
+            if callable(stream_method):
+                parts: list[str] = []
+                for chunk in stream_method(model=model, contents=prompt, config=config):
+                    chunk_text = getattr(chunk, "text", None)
+                    if chunk_text:
+                        parts.append(chunk_text)
+                        if on_chunk:
+                            on_chunk("".join(parts))
+                raw = "".join(parts)
+                if not raw:
+                    raise GenerationError(
+                        "Gemini 스트리밍 응답이 비어 있다. 모델 제한 또는 응답 차단 여부를 확인해야 한다."
+                    )
+            else:
+                # Compatibility path for test doubles and older SDK adapters.
+                response = models.generate_content(
+                    model=model, contents=prompt, config=config
+                )
+                raw = getattr(response, "text", None)
+                if not raw and getattr(response, "parsed", None) is not None:
+                    parsed = response.parsed
+                    raw = (
+                        parsed.model_dump_json()
+                        if hasattr(parsed, "model_dump_json")
+                        else json.dumps(parsed, ensure_ascii=False)
+                    )
             if not raw:
                 raise GenerationError("Gemini 응답 본문이 비어 있다.")
             result = json.loads(raw)
@@ -465,36 +534,74 @@ def generate_with_client(context: dict[str, Any], client: Any, model: str = "gem
             return result
         except Exception as exc:
             last_error = exc
-            if attempt + 1 < max_attempts:
-                time.sleep(0.5 * (attempt + 1))
-    raise GenerationError(f"Gemini 구조화 생성 실패: {last_error}") from last_error
+            text_error = str(exc).lower()
+            code = getattr(exc, "code", None) or getattr(exc, "status_code", None)
+            retryable = (
+                code in {429, 500, 502, 503, 504}
+                or any(token in text_error for token in (
+                    "resource_exhausted", "service_unavailable", "internal error",
+                    "temporarily unavailable", "deadline_exceeded"
+                ))
+            )
+            # Default is one request. Retries remain opt-in for transient errors.
+            if not retryable or attempt + 1 >= attempts:
+                break
+            time.sleep(0.5)
+    raise GenerationError(f"Gemini 생성 실패: {last_error}") from last_error
 
-
-def generate_with_gemini(context: dict[str, Any], api_key: Optional[str] = None,
-                         model: Optional[str] = None, user_requirements: Optional[str] = None) -> dict[str, Any]:
+def generate_with_gemini(
+    context: dict[str, Any],
+    api_key: Optional[str] = None,
+    model: Optional[str] = None,
+    user_requirements: Optional[str] = None,
+    thinking_level: str = "low",
+    on_chunk: Optional[Any] = None,
+) -> dict[str, Any]:
     key = api_key or os.getenv("GEMINI_API_KEY")
     if not key:
-        raise GenerationError("GEMINI_API_KEY가 없다. 환경변수 또는 앱 입력란에 API 키를 설정해야 한다.")
+        raise GenerationError("GEMINI_API_KEY가 없다. Streamlit Secrets 또는 앱 입력란에 API 키를 설정해야 한다.")
     try:
         from google import genai
+        from google.genai import types
     except ImportError as exc:
         raise GenerationError("google-genai 패키지가 설치되지 않았다. requirements.txt를 설치해야 한다.") from exc
-    client = genai.Client(api_key=key)
-    return generate_with_client(
-        context, client, model=model or os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
-        user_requirements=user_requirements
+
+    # Bound a stalled request and disable the SDK's opaque multi-retry loop.
+    # A normal request therefore means one Gemini generation call.
+    http_options = types.HttpOptions(
+        timeout=90_000,
+        retry_options=types.HttpRetryOptions(attempts=1),
     )
+    client = genai.Client(api_key=key, http_options=http_options)
+    try:
+        return generate_with_client(
+            context,
+            client,
+            model=model or os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
+            user_requirements=user_requirements,
+            thinking_level=thinking_level,
+            max_attempts=1,
+            on_chunk=on_chunk,
+        )
+    finally:
+        close = getattr(client, "close", None)
+        if callable(close):
+            close()
 
 
 def generate_package(store: KnowledgeStore, course_id: str, standard_code: str,
                      mode: str = "offline", api_key: Optional[str] = None,
-                     model: Optional[str] = None, user_requirements: Optional[str] = None) -> dict[str, Any]:
+                     model: Optional[str] = None, user_requirements: Optional[str] = None,
+                     thinking_level: str = "low",
+                     on_chunk: Optional[Any] = None) -> dict[str, Any]:
     context = store.build_context(course_id, standard_code)
     if mode == "offline":
         generated = build_offline_scaffold(context)
         actual_mode = "offline_scaffold"
     elif mode == "gemini":
-        generated = generate_with_gemini(context, api_key, model, user_requirements)
+        generated = generate_with_gemini(
+            context, api_key, model, user_requirements, thinking_level, on_chunk=on_chunk
+        )
         actual_mode = "gemini_structured"
     else:
         raise ValueError("mode는 'offline' 또는 'gemini'만 사용할 수 있다.")
